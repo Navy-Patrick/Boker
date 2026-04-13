@@ -85,15 +85,74 @@
         }
 
         const normalizedMd = BlogApp.normalizeArticleMarkdown(mdText);
-        bodyEl.innerHTML = normalizedMd ? BlogApp.miniMarkdown(normalizedMd) : '<p>正文尚未准备好。</p>';
 
         if (type === 'project') {
           wrapEl.classList.add('project-article');
-          metaEl.innerHTML = `
-            <div class="project-meta-strip">
-              <span class="project-chip">${item.stack || '技术栈待补充'}</span>
-            </div>
+          metaEl.innerHTML = '';
+
+          const baseUrl = new URL(item.path, location.href);
+          const images = [...normalizedMd.matchAll(/!\[([^\]]*)\]\(([^\)]+)\)/g)].map(m => {
+            const alt = m[1] || '项目截图';
+            let src = m[2] || '';
+            try {
+              src = new URL(src.replaceAll('\\\\', '/'), baseUrl).href;
+            } catch (_) {}
+            return { alt, src };
+          });
+
+          const lines = normalizedMd.split('\n');
+          const summaryLine = lines.find(l => {
+            const t = l.trim();
+            return t && !t.startsWith('#') && !t.startsWith('>') && !t.startsWith('-') && t !== '---' && t !== '--' && !/^!\[/.test(t);
+          }) || '';
+
+          const section = (name) => {
+            const idx = lines.findIndex(l => l.trim().startsWith(`## ${name}`));
+            if (idx === -1) return '';
+            const out = [];
+            for (let i = idx + 1; i < lines.length; i++) {
+              const t = lines[i].trim();
+              if (t.startsWith('## ')) break;
+              if (!t) continue;
+              if (t.startsWith('![')) continue;
+              out.push(t.replace(/^[-•]\s*/, ''));
+            }
+            return out[0] || '';
+          };
+
+          const v1 = section('项目价值');
+          const v2 = section('一句话总结') || section('核心亮点') || section('适用场景');
+
+          const compactHtml = `
+            <h2>项目价值</h2>
+            <p>${summaryLine || '该项目通过双平台数据采集与看板展示，提升了情绪观察的可解释性。'}</p>
+            <ul>
+              ${v1 ? `<li>${v1}</li>` : ''}
+              ${v2 ? `<li>${v2}</li>` : ''}
+            </ul>
+            <h2>一句话总结</h2>
+            <p>${section('一句话总结') || '从“主观感受”走向“量化观察”，帮助投资决策更冷静。'}</p>
           `;
+
+          const mainImage = images[0]
+            ? `<div class="project-main-shot"><img src="${images[0].src}" alt="${images[0].alt}" loading="lazy" /></div>`
+            : '<div class="project-main-shot empty">暂无主图</div>';
+
+          const thumbs = images.slice(1);
+          const thumbHtml = thumbs.length
+            ? thumbs.map(img => `<figure class="project-thumb"><img src="${img.src}" alt="${img.alt}" loading="lazy" /></figure>`).join('')
+            : '<div class="project-thumb empty">暂无更多截图</div>';
+
+          bodyEl.innerHTML = `
+            <section class="project-layout">
+              <div class="project-text">${compactHtml}</div>
+              <aside class="project-visual">
+                ${mainImage}
+                <div class="project-thumb-row">${thumbHtml}</div>
+              </aside>
+            </section>
+          `;
+
           if (item.github) {
             linkEndEl.innerHTML = `
               <div class="project-end-link">
@@ -101,22 +160,28 @@
               </div>
             `;
           }
+        } else {
+          bodyEl.innerHTML = normalizedMd ? BlogApp.miniMarkdown(normalizedMd) : '<p>正文尚未准备好。</p>';
         }
 
         const navEl = document.getElementById('article-nav');
         if (navEl) {
-          const prev = sorted[index - 1];
-          const next = sorted[index + 1];
-          navEl.innerHTML = `
-            <a class="nav-card" href="${prev ? `./article.html?type=${type}&id=${encodeURIComponent(prev.id)}` : '#'}" ${prev ? '' : 'data-empty="true"'}>
-              <span>上一篇</span>
-              <strong>${prev ? prev.title : '已是最新'}</strong>
-            </a>
-            <a class="nav-card" href="${next ? `./article.html?type=${type}&id=${encodeURIComponent(next.id)}` : '#'}" ${next ? '' : 'data-empty="true"'}>
-              <span>下一篇</span>
-              <strong>${next ? next.title : '已是最早'}</strong>
-            </a>
-          `;
+          if (type === 'project') {
+            navEl.style.display = 'none';
+          } else {
+            const prev = sorted[index - 1];
+            const next = sorted[index + 1];
+            navEl.innerHTML = `
+              <a class="nav-card" href="${prev ? `./article.html?type=${type}&id=${encodeURIComponent(prev.id)}` : '#'}" ${prev ? '' : 'data-empty="true"'}>
+                <span>上一篇</span>
+                <strong>${prev ? prev.title : '已是最新'}</strong>
+              </a>
+              <a class="nav-card" href="${next ? `./article.html?type=${type}&id=${encodeURIComponent(next.id)}` : '#'}" ${next ? '' : 'data-empty="true"'}>
+                <span>下一篇</span>
+                <strong>${next ? next.title : '已是最早'}</strong>
+              </a>
+            `;
+          }
         }
 
         document.title = `${item.title} | Patrick 的静心小站`;

@@ -35,9 +35,16 @@ function isMetaLine(rawLine) {
 function normalizeAssetPath(rawPath = "") {
   const p = rawPath.trim().replaceAll('\\', '/');
   if (!p) return p;
-  if (/^https?:\/\//i.test(p)) return p;
-  if (p.startsWith('./') || p.startsWith('../') || p.startsWith('/')) return p;
-  return `./${p}`;
+
+  if (/^https?:\/\//i.test(p)) {
+    return encodeURI(p);
+  }
+
+  const normalized = (p.startsWith('./') || p.startsWith('../') || p.startsWith('/'))
+    ? p
+    : `./${p}`;
+
+  return encodeURI(normalized);
 }
 
 function miniMarkdown(md) {
