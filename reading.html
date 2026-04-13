@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>道德经合集 | Patrick 的静心小站</title>
+  <title>文章合集 | Patrick 的静心小站</title>
   <link rel="stylesheet" href="./style.css" />
 </head>
 <body>
@@ -13,7 +13,7 @@
       <nav class="nav">
         <a href="./index.html">首页</a>
         <a href="./diary.html">日记随笔</a>
-        <a class="active" href="./reading.html">道德经合集</a>
+        <a class="active" href="./reading.html">文章合集</a>
         <a href="./projects.html">技术项目</a>
         <a href="./about.html">关于</a>
       </nav>
@@ -24,11 +24,11 @@
     <main class="main">
       <section class="panel">
         <div class="section-head">
-          <h1 class="section-title">经典读后感</h1>
+          <h1 class="section-title">文章合集</h1>
         </div>
 
-        <h2 class="group-title">《道德经》</h2>
-        <ul class="item-list" id="reading-list"></ul>
+        <ul class="book-tabs" id="book-tabs"></ul>
+        <div id="book-groups"></div>
       </section>
     </main>
 
@@ -40,19 +40,42 @@
   <script src="./app.js"></script>
   <script>
     (async () => {
-      const list = document.getElementById('reading-list');
+      const tabsEl = document.getElementById('book-tabs');
+      const groupsEl = document.getElementById('book-groups');
+
       try {
         const posts = await BlogApp.loadJson('./data/reading.json');
-        const ddj = posts.filter(item => item.book === '道德经').sort((a, b) => (a.date < b.date ? 1 : -1));
-        list.innerHTML = ddj.map(item => `
-          <li class="item card-row">
-            <div class="item-meta">${BlogApp.formatDate(item.date)} · ${item.section}</div>
-            <h3 class="item-title"><a href="./article.html?type=reading&id=${encodeURIComponent(item.id)}">${item.title}</a></h3>
-            <p class="item-desc">${item.summary}</p>
-          </li>
+        const sorted = posts.slice().sort((a, b) => (a.date < b.date ? 1 : -1));
+
+        const byBook = sorted.reduce((acc, item) => {
+          const key = item.book || '未分类';
+          if (!acc[key]) acc[key] = [];
+          acc[key].push(item);
+          return acc;
+        }, {});
+
+        const books = Object.keys(byBook);
+
+        tabsEl.innerHTML = books.map((book, i) => `
+          <li><a href="#book-${i}" class="book-tab">${book}<span>${byBook[book].length}</span></a></li>
+        `).join('');
+
+        groupsEl.innerHTML = books.map((book, i) => `
+          <section class="book-group" id="book-${i}">
+            <h2 class="group-title">《${book}》</h2>
+            <ul class="item-list">
+              ${byBook[book].map(item => `
+                <li class="item card-row">
+                  <div class="item-meta">${BlogApp.formatDate(item.date)} · ${item.section || '未分章'}</div>
+                  <h3 class="item-title"><a href="./article.html?type=reading&id=${encodeURIComponent(item.id)}">${item.title}</a></h3>
+                  <p class="item-desc">${item.summary}</p>
+                </li>
+              `).join('')}
+            </ul>
+          </section>
         `).join('');
       } catch (e) {
-        list.innerHTML = '<li class="empty">暂时无法加载读书目录。</li>';
+        groupsEl.innerHTML = '<p class="empty">暂时无法加载文章合集目录。</p>';
       }
     })();
   </script>
