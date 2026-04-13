@@ -55,19 +55,59 @@ function cleanTitle(raw) {
 
 function inferSummary(md) {
   const lines = md.split('\n');
-  let inCode = false;
 
+  // 1) 道德经优先：取“原文”代码块中的第一句
+  let inOriginal = false;
+  let inCode = false;
   for (const raw of lines) {
     const line = raw.trim();
+    const plain = line.replace(/\*\*/g, '').replace(/^>\s*/, '').trim();
 
-    if (line.startsWith('```')) {
+    if (!inOriginal && (plain === '原文：' || plain === '原文')) {
+      inOriginal = true;
+      continue;
+    }
+
+    if (inOriginal && line.startsWith('```')) {
       inCode = !inCode;
       continue;
     }
 
-    if (inCode) continue;
+    if (inOriginal && inCode) {
+      const sentence = plain
+        .replace(/^[-•*]\s*/, '')
+        .replace(/\[([^\]]+)\]\([^\)]+\)/g, '$1')
+        .trim();
+      if (sentence) {
+        return sentence.length > 100 ? `${sentence.slice(0, 100)}…` : sentence;
+      }
+      continue;
+    }
 
-    const plain = line.replace(/\*\*/g, '').replace(/^>\s*/, '').trim();
+    if (inOriginal && !inCode && plain && plain !== '原文：') {
+      // 原文块结束
+      break;
+    }
+  }
+
+  // 2) 通用兜底：第一段有效正文
+  let inAnyCode = false;
+  for (const raw of lines) {
+    const line = raw.trim();
+
+    if (line.startsWith('```')) {
+      inAnyCode = !inAnyCode;
+      continue;
+    }
+
+    if (inAnyCode) continue;
+
+    const plain = line
+      .replace(/\*\*/g, '')
+      .replace(/^>\s*/, '')
+      .replace(/\[([^\]]+)\]\([^\)]+\)/g, '$1')
+      .trim();
+
     if (!plain) continue;
     if (plain === '---' || plain === '--') continue;
     if (plain.startsWith('#')) continue;

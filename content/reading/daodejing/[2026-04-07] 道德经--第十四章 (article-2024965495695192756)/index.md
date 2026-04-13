@@ -1,6 +1,5 @@
 # 道德经--第十四章
 
-> **Author / 作者**: 花雨迟  
 > **Date / 日期**: 2026-04-07
 
 ---
@@ -39,7 +38,7 @@
 
 个人体会：
 
-大音希声，大象无形，[大巧若拙](https://zhida.zhihu.com/search?content_id=272697424&content_type=Article&match_order=1&q=%E5%A4%A7%E5%B7%A7%E8%8B%A5%E6%8B%99&zhida_source=entity)，[大道至简](https://zhida.zhihu.com/search?content_id=272697424&content_type=Article&match_order=1&q=%E5%A4%A7%E9%81%93%E8%87%B3%E7%AE%80&zhida_source=entity)。
+大音希声，大象无形，，。
 
 最有效的往往是最简单的，真理往往是最朴实无华的，藏在人们生活中的点点滴滴。
 

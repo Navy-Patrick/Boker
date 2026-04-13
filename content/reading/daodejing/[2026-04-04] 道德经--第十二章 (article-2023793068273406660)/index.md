@@ -1,6 +1,5 @@
 # 道德经--第十二章
 
-> **Author / 作者**: 花雨迟  
 > **Date / 日期**: 2026-04-04
 
 ---
@@ -31,7 +30,7 @@
 
 **个人体会：**
 
-看到这段文字第一时间想起的是[冬泳怪鸽](https://zhida.zhihu.com/search?content_id=272560292&content_type=Article&match_order=1&q=%E5%86%AC%E6%B3%B3%E6%80%AA%E9%B8%BD&zhida_source=entity)，从全网爆火至今，依旧每天日更冬泳视频，偶尔刷到直播吃饭也都是很朴素的白菜豆腐，也许像他这样的人是真正做到了[知行合一](https://zhida.zhihu.com/search?content_id=272560292&content_type=Article&match_order=1&q=%E7%9F%A5%E8%A1%8C%E5%90%88%E4%B8%80&zhida_source=entity)。
+看到这段文字第一时间想起的是，从全网爆火至今，依旧每天日更冬泳视频，偶尔刷到直播吃饭也都是很朴素的白菜豆腐，也许像他这样的人是真正做到了。
 
 绝大多数普通人面对泼天的诱惑有几个能守住本心，不为所动，能够在互联网上见到这样的榜样也是很幸运了。
 

@@ -1,6 +1,5 @@
 # 道德经--第九章
 
-> **Author / 作者**: 花雨迟  
 > **Date / 日期**: 2026-04-01
 
 ---
@@ -43,7 +42,7 @@
 
 不要把平台当本事，离开平台啥也不是。
 
-[物极必反](https://zhida.zhihu.com/search?content_id=272362624&content_type=Article&match_order=1&q=%E7%89%A9%E6%9E%81%E5%BF%85%E5%8F%8D&zhida_source=entity)，过刚则折，[满招损谦受益](https://zhida.zhihu.com/search?content_id=272362624&content_type=Article&match_order=1&q=%E6%BB%A1%E6%8B%9B%E6%8D%9F%E8%B0%A6%E5%8F%97%E7%9B%8A&zhida_source=entity)，学会谦卑，学会怀柔，
+，过刚则折，，学会谦卑，学会怀柔，
 
 比你强大的不畏惧谄媚，比你弱小的不轻蔑鄙视，
 
@@ -51,7 +50,7 @@
 
 知道自己想要什么，才能不轻易受到外界干扰从而动摇内心
 
-当你身处低谷绝望之境，要知道这是绝处逢生[否极泰来](https://zhida.zhihu.com/search?content_id=272362624&content_type=Article&match_order=1&q=%E5%90%A6%E6%9E%81%E6%B3%B0%E6%9D%A5&zhida_source=entity)的转变
+当你身处低谷绝望之境，要知道这是绝处逢生的转变
 
 当你身居高位家财万贯，要谨慎自己飘然自喜听不到真实声音
 

@@ -1,6 +1,5 @@
 # 道德经--第十一章
 
-> **Author / 作者**: 花雨迟  
 > **Date / 日期**: 2026-04-03
 
 ---
@@ -33,7 +32,7 @@
 
 有之以为利，无知以为用。
 
-除了[老子](https://zhida.zhihu.com/search?content_id=272506494&content_type=Article&match_order=1&q=%E8%80%81%E5%AD%90&zhida_source=entity)举的例子之外，生活中还有很多：口袋，书包，瓶子...
+除了举的例子之外，生活中还有很多：口袋，书包，瓶子...
 
 能力地位，是有；可以拒绝不喜欢的人或事，是无；
 
