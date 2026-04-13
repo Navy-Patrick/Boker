@@ -5,11 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>文章 | Patrick 的静心小站</title>
   <link rel="stylesheet" href="./style.css" />
+  <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
 </head>
 <body>
   <header class="site-header">
     <div class="site-header-inner">
-      <a class="site-title" href="./index.html">Patrick 的静心小站</a>
+      <a class="site-title" href="./index.html">Patrick · 静心小站</a>
       <nav class="nav">
         <a href="./index.html">首页</a>
         <a href="./diary.html">日记随笔</a>
@@ -36,6 +37,7 @@
 
   <script src="./data/diary.js"></script>
   <script src="./data/reading.js"></script>
+  <script src="./data/projects.js"></script>
   <script src="./app.js"></script>
   <script>
     (async () => {
@@ -45,7 +47,11 @@
       const { type, id } = BlogApp.parseQuery();
 
       try {
-        const dataPath = type === 'reading' ? './data/reading.json' : './data/diary.json';
+        const dataPath = type === 'reading'
+          ? './data/reading.json'
+          : type === 'project'
+            ? './data/projects.json'
+            : './data/diary.json';
         const list = await BlogApp.loadJson(dataPath);
         const sorted = list.slice().sort((a, b) => (a.date < b.date ? 1 : -1));
         const index = sorted.findIndex(post => post.id === id);

@@ -5,11 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>技术项目 | Patrick 的静心小站</title>
   <link rel="stylesheet" href="./style.css" />
+  <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
 </head>
 <body>
   <header class="site-header">
     <div class="site-header-inner">
-      <a class="site-title" href="./index.html">Patrick 的静心小站</a>
+      <a class="site-title" href="./index.html">Patrick · 静心小站</a>
       <nav class="nav">
         <a href="./index.html">首页</a>
         <a href="./diary.html">日记随笔</a>
@@ -22,27 +23,44 @@
 
   <div class="site-wrap">
     <main class="main">
-      <h1 class="section-title">技术项目展览</h1>
-      
-
-      <section class="grid">
-        <article class="item">
-          <h2 class="item-title">项目名称（示例）</h2>
-          <p class="item-desc">这里写项目一句话简介：解决了什么问题，适合谁使用。</p>
-          <p class="project-stack">技术栈：HTML / CSS / JavaScript</p>
-          <a class="read-more" href="https://github.com/yourname/your-project" target="_blank" rel="noopener">GitHub 链接</a>
-        </article>
-
-        <article class="item">
-          <h2 class="item-title">项目名称（待添加）</h2>
-          <p class="item-desc">复制这张卡片即可新增项目。</p>
-          <p class="project-stack">技术栈：待补充</p>
-          <a class="read-more" href="#">GitHub 链接</a>
-        </article>
+      <section class="panel">
+        <div class="section-head">
+          <h1 class="section-title">技术项目</h1>
+        </div>
+        <ul class="item-list" id="project-list"></ul>
       </section>
     </main>
 
     <footer class="footer">© 2026 Patrick · GitHub Pages</footer>
   </div>
+
+  <script src="./data/projects.js"></script>
+  <script src="./app.js"></script>
+  <script>
+    (async () => {
+      const listEl = document.getElementById('project-list');
+      try {
+        const projects = await BlogApp.loadJson('./data/projects.json');
+        if (!projects.length) {
+          listEl.innerHTML = '<li class="empty">暂无项目，后续会持续补充。</li>';
+          return;
+        }
+
+        listEl.innerHTML = projects.map(item => `
+          <li class="item card-row">
+            <div class="item-meta">${BlogApp.formatDate(item.date)} · ${item.stack || '技术栈待补充'}</div>
+            <h2 class="item-title"><a href="./article.html?type=project&id=${encodeURIComponent(item.id)}">${item.title}</a></h2>
+            <p class="item-desc">${item.summary || ''}</p>
+            <div style="margin-top:8px; display:flex; gap:14px; flex-wrap:wrap;">
+              <a class="read-more" href="./article.html?type=project&id=${encodeURIComponent(item.id)}">查看项目详情</a>
+              ${item.github ? `<a class="read-more" href="${item.github}" target="_blank" rel="noopener">GitHub</a>` : ''}
+            </div>
+          </li>
+        `).join('');
+      } catch (e) {
+        listEl.innerHTML = '<li class="empty">暂时无法加载项目列表。</li>';
+      }
+    })();
+  </script>
 </body>
 </html>

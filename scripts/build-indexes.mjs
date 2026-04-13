@@ -4,12 +4,15 @@ import path from 'node:path';
 const ROOT = process.cwd();
 const DIARY_DIR = path.join(ROOT, 'content', 'essays');
 const READING_DIR = path.join(ROOT, 'content', 'reading');
+const PROJECTS_DIR = path.join(ROOT, 'content', 'projects');
 const DATA_DIR = path.join(ROOT, 'data');
 
 const DIARY_JSON = path.join(DATA_DIR, 'diary.json');
 const READING_JSON = path.join(DATA_DIR, 'reading.json');
+const PROJECTS_JSON = path.join(DATA_DIR, 'projects.json');
 const DIARY_JS = path.join(DATA_DIR, 'diary.js');
 const READING_JS = path.join(DATA_DIR, 'reading.js');
+const PROJECTS_JS = path.join(DATA_DIR, 'projects.js');
 
 function walkMd(dir) {
   if (!fs.existsSync(dir)) return [];
@@ -53,10 +56,26 @@ function cleanTitle(raw) {
     .trim();
 }
 
+function readMetaLine(md, key) {
+  const lines = md.split('\n');
+  const lower = key.toLowerCase();
+  for (const raw of lines) {
+    const line = raw.replace(/\*\*/g, '').trim();
+    if (!line.startsWith('>')) continue;
+    const body = line.replace(/^>\s*/, '');
+    const idx = body.search(/[:：]/);
+    if (idx === -1) continue;
+    const left = body.slice(0, idx).trim().toLowerCase();
+    const right = body.slice(idx + 1).trim();
+    if (!right) continue;
+    if (left === lower || left.includes(lower)) return right;
+  }
+  return '';
+}
+
 function inferSummary(md) {
   const lines = md.split('\n');
 
-  // 1) 道德经优先：取“原文”代码块中的第一句
   let inOriginal = false;
   let inCode = false;
   for (const raw of lines) {
@@ -78,19 +97,13 @@ function inferSummary(md) {
         .replace(/^[-•*]\s*/, '')
         .replace(/\[([^\]]+)\]\([^\)]+\)/g, '$1')
         .trim();
-      if (sentence) {
-        return sentence.length > 100 ? `${sentence.slice(0, 100)}…` : sentence;
-      }
+      if (sentence) return sentence.length > 100 ? `${sentence.slice(0, 100)}…` : sentence;
       continue;
     }
 
-    if (inOriginal && !inCode && plain && plain !== '原文：') {
-      // 原文块结束
-      break;
-    }
+    if (inOriginal && !inCode && plain && plain !== '原文：') break;
   }
 
-  // 2) 通用兜底：第一段有效正文
   let inAnyCode = false;
   for (const raw of lines) {
     const line = raw.trim();
@@ -164,6 +177,27 @@ function readingFromFilename(file, md) {
   };
 }
 
+function projectFromFile(file, md) {
+  const base = path.basename(file, '.md');
+  const folder = path.basename(path.dirname(file));
+  const sourceName = base.toLowerCase() === 'index' ? folder : base;
+
+  const date = parseDate(sourceName);
+  const title = cleanTitle(sourceName.replace(/^\d{4}-\d{2}-\d{2}[-_]?/, '')) || sourceName;
+
+  return {
+    id: `project-${slugFromPath(file)}`,
+    date: date || new Date().toISOString().slice(0, 10),
+    title,
+    summary: readMetaLine(md, '摘要') || inferSummary(md),
+    stack: readMetaLine(md, '技术栈') || readMetaLine(md, 'stack') || '待补充',
+    github: readMetaLine(md, 'github') || '',
+    cover: readMetaLine(md, '封面') || '',
+    path: `./${toPosix(path.relative(ROOT, file))}`,
+    content: md
+  };
+}
+
 function makeDiaryIndex() {
   return walkMd(DIARY_DIR)
     .filter(file => {
@@ -180,6 +214,13 @@ function makeReadingIndex() {
     .sort((a, b) => (a.date < b.date ? 1 : -1));
 }
 
+function makeProjectsIndex() {
+  return walkMd(PROJECTS_DIR)
+    .filter(file => path.basename(file).toLowerCase() === 'index.md')
+    .map(file => projectFromFile(file, readText(file)))
+    .sort((a, b) => (a.date < b.date ? 1 : -1));
+}
+
 function writeJson(file, obj) {
   fs.writeFileSync(file, `${JSON.stringify(obj, null, 2)}\n`, 'utf8');
 }
@@ -190,10 +231,13 @@ function writeJs(file, varName, obj) {
 
 const diary = makeDiaryIndex();
 const reading = makeReadingIndex();
+const projects = makeProjectsIndex();
 
 writeJson(DIARY_JSON, diary);
 writeJson(READING_JSON, reading);
+writeJson(PROJECTS_JSON, projects);
 writeJs(DIARY_JS, '__DIARY_DATA__', diary);
 writeJs(READING_JS, '__READING_DATA__', reading);
+writeJs(PROJECTS_JS, '__PROJECTS_DATA__', projects);
 
-console.log(`索引更新完成：随笔 ${diary.length} 篇，读书 ${reading.length} 篇`);
+console.log(`索引更新完成：随笔 ${diary.length} 篇，读书 ${reading.length} 篇，项目 ${projects.length} 个`);

@@ -6,6 +6,7 @@ async function loadJson(path) {
   } catch (err) {
     if (path.includes('diary') && Array.isArray(window.__DIARY_DATA__)) return window.__DIARY_DATA__;
     if (path.includes('reading') && Array.isArray(window.__READING_DATA__)) return window.__READING_DATA__;
+    if (path.includes('projects') && Array.isArray(window.__PROJECTS_DATA__)) return window.__PROJECTS_DATA__;
     throw err;
   }
 }
@@ -28,7 +29,15 @@ function isMetaLine(rawLine) {
   if (!plain) return false;
   if (plain === "---" || plain === "--") return true;
 
-  return /^(Author\s*\/\s*作者|Source\s*\/\s*来源|Date\s*\/\s*日期|作者|来源|日期)\s*[:：]/i.test(plain);
+  return /^(Author\s*\/\s*作者|Source\s*\/\s*来源|Date\s*\/\s*日期|作者|来源|日期|摘要|Summary|技术栈|Stack|GitHub|封面|Cover)\s*[:：]/i.test(plain);
+}
+
+function normalizeAssetPath(rawPath = "") {
+  const p = rawPath.trim().replaceAll('\\', '/');
+  if (!p) return p;
+  if (/^https?:\/\//i.test(p)) return p;
+  if (p.startsWith('./') || p.startsWith('../') || p.startsWith('/')) return p;
+  return `./${p}`;
 }
 
 function miniMarkdown(md) {
@@ -111,9 +120,14 @@ function miniMarkdown(md) {
     }
 
     closeList();
-    const inline = escapeHtml(line)
+    let inline = escapeHtml(line)
       .replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>")
       .replace(/`([^`]+)`/g, "<code>$1</code>");
+
+    inline = inline
+      .replace(/!\[([^\]]*)\]\(([^\)]+)\)/g, (_, alt, src) => `<img src="${normalizeAssetPath(src)}" alt="${alt}" loading="lazy" />`)
+      .replace(/\[([^\]]+)\]\(([^\)]+)\)/g, (_, text, href) => `<a href="${normalizeAssetPath(href)}" target="_blank" rel="noopener">${text}</a>`);
+
     html += `<p>${inline}</p>`;
   }
 
