@@ -73,6 +73,11 @@ function readMetaLine(md, key) {
   return '';
 }
 
+function pickTitleFromMarkdown(md, fallback) {
+  const m = md.match(/^#\s+(.+)$/m);
+  return m ? m[1].trim() : fallback;
+}
+
 function inferSummary(md) {
   const lines = md.split('\n');
 
@@ -182,8 +187,10 @@ function projectFromFile(file, md) {
   const folder = path.basename(path.dirname(file));
   const sourceName = base.toLowerCase() === 'index' ? folder : base;
 
-  const date = parseDate(sourceName);
-  const title = cleanTitle(sourceName.replace(/^\d{4}-\d{2}-\d{2}[-_]?/, '')) || sourceName;
+  const heading = (md.match(/^#\s+(.+)$/m) || [null, ''])[1].trim();
+  const metaDate = readMetaLine(md, '日期') || readMetaLine(md, 'date');
+  const date = parseDate(metaDate) || parseDate(sourceName);
+  const title = heading || cleanTitle(sourceName.replace(/^\d{4}-\d{2}-\d{2}[-_]?/, '')) || sourceName;
 
   return {
     id: `project-${slugFromPath(file)}`,
