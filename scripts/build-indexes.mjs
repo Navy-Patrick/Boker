@@ -54,17 +54,31 @@ function cleanTitle(raw) {
 }
 
 function inferSummary(md) {
-  const lines = md.split('\n').map(s => s.trim()).filter(Boolean);
-  for (const line of lines) {
+  const lines = md.split('\n');
+  let inCode = false;
+
+  for (const raw of lines) {
+    const line = raw.trim();
+
+    if (line.startsWith('```')) {
+      inCode = !inCode;
+      continue;
+    }
+
+    if (inCode) continue;
+
     const plain = line.replace(/\*\*/g, '').replace(/^>\s*/, '').trim();
     if (!plain) continue;
     if (plain === '---' || plain === '--') continue;
     if (plain.startsWith('#')) continue;
+    if (plain === '原文：' || plain === '译文：' || plain === '个人体会：') continue;
     if (plain.startsWith('Author / 作者') || plain.startsWith('Source / 来源') || plain.startsWith('Date / 日期')) continue;
     if (plain.startsWith('作者') || plain.startsWith('来源') || plain.startsWith('日期')) continue;
     if (plain.startsWith('http://') || plain.startsWith('https://')) continue;
+
     return plain.length > 100 ? `${plain.slice(0, 100)}…` : plain;
   }
+
   return '（待补充摘要）';
 }
 
