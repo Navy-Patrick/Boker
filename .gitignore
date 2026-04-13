@@ -1,0 +1,6 @@
+# Local working notes (do not publish)
+local-notes/
+
+# Optional OS/editor noise
+.DS_Store
+Thumbs.db
