@@ -14,7 +14,7 @@
       <nav class="nav">
         <a href="./index.html">首页</a>
         <a href="./diary.html">日记随笔</a>
-        <a href="./reading.html">道德经合集</a>
+        <a href="./reading.html">文章合集</a>
         <a href="./projects.html">技术项目</a>
         <a href="./about.html">关于</a>
       </nav>
@@ -23,10 +23,12 @@
 
   <div class="site-wrap">
     <main class="main">
-      <article class="article">
+      <article class="article" id="article-wrap">
         <h1 id="article-title">加载中...</h1>
         <div class="date" id="article-date"></div>
+        <div id="project-meta"></div>
         <div id="article-body"></div>
+        <div id="project-link-end"></div>
 
         <nav class="article-nav" id="article-nav"></nav>
       </article>
@@ -44,6 +46,9 @@
       const titleEl = document.getElementById('article-title');
       const dateEl = document.getElementById('article-date');
       const bodyEl = document.getElementById('article-body');
+      const metaEl = document.getElementById('project-meta');
+      const linkEndEl = document.getElementById('project-link-end');
+      const wrapEl = document.getElementById('article-wrap');
       const { type, id } = BlogApp.parseQuery();
 
       try {
@@ -82,6 +87,21 @@
         const normalizedMd = BlogApp.normalizeArticleMarkdown(mdText);
         bodyEl.innerHTML = normalizedMd ? BlogApp.miniMarkdown(normalizedMd) : '<p>正文尚未准备好。</p>';
 
+        if (type === 'project') {
+          wrapEl.classList.add('project-article');
+          metaEl.innerHTML = `
+            <div class="project-meta-strip">
+              <span class="project-chip">${item.stack || '技术栈待补充'}</span>
+            </div>
+          `;
+          if (item.github) {
+            linkEndEl.innerHTML = `
+              <div class="project-end-link">
+                <a href="${item.github}" target="_blank" rel="noopener">项目链接：${item.github}</a>
+              </div>
+            `;
+          }
+        }
 
         const navEl = document.getElementById('article-nav');
         if (navEl) {

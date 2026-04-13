@@ -285,15 +285,34 @@ a:hover { text-decoration: underline; }
   background: var(--panel);
   border: 1px solid rgba(210, 216, 226, 0.9);
   border-radius: 14px;
-  padding: 24px;
+  padding: 28px;
   box-shadow: var(--shadow);
 }
-.article h1 { margin: 0 0 8px; font-size: 1.9rem; line-height: 1.4; }
+.article h1 { margin: 0 0 8px; font-size: 2rem; line-height: 1.35; }
 .article .date {
-  margin-bottom: 12px;
+  margin-bottom: 14px;
   color: var(--muted);
   font-size: 0.98rem;
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+.project-meta-strip {
+  margin-bottom: 14px;
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.project-chip {
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid var(--line);
+  background: rgba(255,255,255,0.65);
+  border-radius: 999px;
+  padding: 4px 10px;
+  font-size: 0.86rem;
+  color: #3f4d5d;
+}
+.project-chip.link {
+  color: var(--accent);
 }
 .article p,
 .article li {
@@ -326,6 +345,15 @@ a:hover { text-decoration: underline; }
   border-left: 3px solid #90a4bf;
   background: var(--accent-soft);
   color: #39506a;
+}
+.project-end-link {
+  margin-top: 18px;
+  padding-top: 14px;
+  border-top: 1px dashed var(--line);
+  font-size: 0.98rem;
+}
+.project-end-link a {
+  word-break: break-all;
 }
 .article pre {
   overflow-x: auto;
