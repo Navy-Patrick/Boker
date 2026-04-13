@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>文章 | Patrick 的静心小站</title>
+  <link rel="stylesheet" href="./style.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="site-header-inner">
+      <a class="site-title" href="./index.html">Patrick 的静心小站</a>
+      <nav class="nav">
+        <a href="./index.html">首页</a>
+        <a href="./diary.html">日记随笔</a>
+        <a href="./reading.html">道德经合集</a>
+        <a href="./projects.html">技术项目</a>
+        <a href="./about.html">关于</a>
+      </nav>
+    </div>
+  </header>
+
+  <div class="site-wrap">
+    <main class="main">
+      <article class="article">
+        <h1 id="article-title">加载中...</h1>
+        <div class="date" id="article-date"></div>
+        <div id="article-body"></div>
+
+        <nav class="article-nav" id="article-nav"></nav>
+      </article>
+    </main>
+
+    <footer class="footer">© 2026 Patrick · GitHub Pages</footer>
+  </div>
+
+  <script src="./data/diary.js"></script>
+  <script src="./data/reading.js"></script>
+  <script src="./app.js"></script>
+  <script>
+    (async () => {
+      const titleEl = document.getElementById('article-title');
+      const dateEl = document.getElementById('article-date');
+      const bodyEl = document.getElementById('article-body');
+      const { type, id } = BlogApp.parseQuery();
+
+      try {
+        const dataPath = type === 'reading' ? './data/reading.json' : './data/diary.json';
+        const list = await BlogApp.loadJson(dataPath);
+        const sorted = list.slice().sort((a, b) => (a.date < b.date ? 1 : -1));
+        const index = sorted.findIndex(post => post.id === id);
+        const item = index >= 0 ? sorted[index] : null;
+
+        if (!item) {
+          titleEl.textContent = '未找到文章';
+          bodyEl.innerHTML = '<p>请检查链接是否正确。</p>';
+          return;
+        }
+
+        titleEl.textContent = item.title;
+        dateEl.textContent = BlogApp.formatDate(item.date);
+
+        let mdText = '';
+        try {
+          const safePath = encodeURI(item.path);
+          const res = await fetch(safePath);
+          mdText = res.ok ? await res.text() : '';
+        } catch (_) {
+          mdText = '';
+        }
+
+        if (!mdText && item.content) {
+          mdText = item.content;
+        }
+
+        const normalizedMd = BlogApp.normalizeArticleMarkdown(mdText);
+        bodyEl.innerHTML = normalizedMd ? BlogApp.miniMarkdown(normalizedMd) : '<p>正文尚未准备好。</p>';
+
+
+        const navEl = document.getElementById('article-nav');
+        if (navEl) {
+          const prev = sorted[index - 1];
+          const next = sorted[index + 1];
+          navEl.innerHTML = `
+            <a class="nav-card" href="${prev ? `./article.html?type=${type}&id=${encodeURIComponent(prev.id)}` : '#'}" ${prev ? '' : 'data-empty="true"'}>
+              <span>上一篇</span>
+              <strong>${prev ? prev.title : '已是最新'}</strong>
+            </a>
+            <a class="nav-card" href="${next ? `./article.html?type=${type}&id=${encodeURIComponent(next.id)}` : '#'}" ${next ? '' : 'data-empty="true"'}>
+              <span>下一篇</span>
+              <strong>${next ? next.title : '已是最早'}</strong>
+            </a>
+          `;
+        }
+
+        document.title = `${item.title} | Patrick 的静心小站`;
+      } catch (e) {
+        titleEl.textContent = '加载失败';
+        bodyEl.innerHTML = '<p>暂时无法加载文章，请稍后再试。</p>';
+      }
+    })();
+  </script>
+</body>
+</html>

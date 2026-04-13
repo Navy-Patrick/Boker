@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>首页 | Patrick 的静心小站</title>
+  <link rel="stylesheet" href="./style.css" />
+</head>
+<body>
+  <header class="site-header hero-header">
+    <div class="site-header-inner">
+      <a class="site-title" href="./index.html">Patrick · 静心小站</a>
+      <nav class="nav">
+        <a class="active" href="./index.html">首页</a>
+        <a href="./diary.html">日记随笔</a>
+        <a href="./reading.html">道德经合集</a>
+        <a href="./projects.html">技术项目</a>
+        <a href="./about.html">关于</a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="hero" aria-label="封面">
+    <div class="hero-mask"></div>
+    <div class="hero-inner poem-only">
+      <blockquote id="hero-poem-text">“竹杖芒鞋轻胜马，谁怕？一蓑烟雨任平生。”</blockquote>
+      <p id="hero-poem-author">—— 苏轼《定风波》</p>
+    </div>
+  </section>
+
+  <div class="site-wrap" id="home-content">
+    <main class="main home-grid">
+      <aside class="panel side-card">
+        <p class="side-kicker">写作现场</p>
+        <h2 class="side-title">在安静里累积<br />长期主义</h2>
+        <p class="side-desc">把日常、阅读、技术沉淀为可回看的文字轨迹。</p>
+
+        <div class="side-stats">
+          <div><span id="stat-diary">0</span><small>随笔</small></div>
+          <div><span id="stat-reading">0</span><small>读书</small></div>
+        </div>
+
+        <div class="mini-widget">
+          <div class="widget-row">
+            <span>年度进度</span>
+            <strong id="year-progress-text">0%</strong>
+          </div>
+          <div class="progress-track">
+            <div class="progress-fill" id="year-progress-fill"></div>
+          </div>
+
+
+        </div>
+      </aside>
+
+      <section class="panel">
+        <div class="section-head">
+          <h2 class="section-title">最新随笔</h2>
+          <a class="soft-link" href="./diary.html">查看全部</a>
+        </div>
+        <ul class="item-list" id="latest-list"></ul>
+      </section>
+    </main>
+
+    <footer class="footer">© 2026 Patrick · GitHub Pages</footer>
+  </div>
+
+  <script src="./data/diary.js"></script>
+  <script src="./data/reading.js"></script>
+  <script src="./data/poems.js"></script>
+  <script src="./app.js"></script>
+  <script>
+    (async () => {
+      const list = document.getElementById('latest-list');
+      try {
+        const [diary, reading] = await Promise.all([
+          BlogApp.loadJson('./data/diary.json'),
+          BlogApp.loadJson('./data/reading.json')
+        ]);
+
+        document.getElementById('stat-diary').textContent = diary.length;
+        document.getElementById('stat-reading').textContent = reading.length;
+
+        const latest = diary.slice().sort((a, b) => (a.date < b.date ? 1 : -1)).slice(0, 3);
+        list.innerHTML = latest.map(item => `
+          <li class="item card-row">
+            <div class="item-meta">${BlogApp.formatDate(item.date)}</div>
+            <h3 class="item-title"><a href="./article.html?type=diary&id=${encodeURIComponent(item.id)}">${item.title}</a></h3>
+            <p class="item-desc">${item.summary || ''}</p>
+            <a class="read-more" href="./article.html?type=diary&id=${encodeURIComponent(item.id)}">阅读全文</a>
+          </li>
+        `).join('');
+
+        const now = new Date();
+        const year = now.getFullYear();
+        const start = new Date(year, 0, 1);
+        const end = new Date(year + 1, 0, 1);
+        const percent = Math.max(0, Math.min(100, ((now - start) / (end - start)) * 100));
+        document.getElementById('year-progress-text').textContent = `${percent.toFixed(1)}%`;
+        document.getElementById('year-progress-fill').style.width = `${percent.toFixed(1)}%`;
+
+        const poemPool = Array.isArray(window.__POEMS__) && window.__POEMS__.length
+          ? window.__POEMS__
+          : [{ text: '竹杖芒鞋轻胜马，谁怕？一蓑烟雨任平生。', author: '苏轼《定风波》' }];
+        const pick = poemPool[Math.floor(Math.random() * poemPool.length)];
+        document.getElementById('hero-poem-text').textContent = `“${pick.text}”`;
+        document.getElementById('hero-poem-author').textContent = `—— ${pick.author}`;
+      } catch (e) {
+        list.innerHTML = '<li class="empty">暂时无法加载最新文章。若你是直接双击打开HTML，请使用本地服务器或GitHub Pages访问。</li>';
+      }
+    })();
+  </script>
+</body>
+</html>

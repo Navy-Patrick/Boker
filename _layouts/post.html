@@ -1,0 +1,41 @@
+---
+layout: default
+---
+
+<style>
+  .back-btn {
+    display: inline-flex;
+    align-items: center;
+    color: #a8a29e;
+    font-size: 0.875rem;
+    margin-bottom: 32px;
+  }
+  .back-btn:hover { color: #292524; }
+  
+  .post-header { text-align: center; margin-bottom: 48px; }
+  .post-date { font-family: monospace; color: #a8a29e; font-size: 0.875rem; margin-bottom: 12px; }
+  .post-title-lg { font-size: 2.25rem; font-weight: 700; margin-bottom: 24px; line-height: 1.2; }
+  .separator { width: 64px; height: 1px; background: #e7e5e4; margin: 0 auto; }
+
+  /* Markdown 内容排版 (模仿 Tailwind Prose) */
+  .prose { color: #44403c; font-size: 1.125rem; line-height: 1.9; }
+  .prose p { margin-bottom: 1.5em; }
+  .prose h2, .prose h3 { color: #292524; margin-top: 2em; margin-bottom: 1em; font-weight: 700; }
+  .prose blockquote { border-left: 4px solid #e7e5e4; padding-left: 1em; color: #78716c; font-style: italic; }
+  .prose img { max-width: 100%; border-radius: 4px; margin: 2em auto; display: block; }
+  .prose ul { list-style: disc; padding-left: 1.5em; margin-bottom: 1.5em; }
+</style>
+
+<a href="{{ "/" | relative_url }}" class="back-btn">← 返回列表</a>
+
+<article>
+  <header class="post-header">
+    <div class="post-date">{{ page.date | date: "%Y-%m-%d" }} · {{ page.categories | first }}</div>
+    <h1 class="post-title-lg">{{ page.title }}</h1>
+    <div class="separator"></div>
+  </header>
+
+  <div class="prose">
+    {{ content }}
+  </div>
+</article>

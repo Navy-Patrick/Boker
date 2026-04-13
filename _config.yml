@@ -1,0 +1,8 @@
+title: 半亩方塘
+author: 您的名字
+description: "记录生活，书写感悟"
+baseurl: ""
+url: "https://Patrick.github.io"
+theme: minima  # 初学者建议先用默认主题，熟练后可更换
+plugins:
+  - jekyll-feed

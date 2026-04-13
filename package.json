@@ -1,0 +1,11 @@
+{
+  "name": "patrick-blog-static",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Markdown-driven personal blog for GitHub Pages",
+  "scripts": {
+    "build:indexes": "node scripts/build-indexes.mjs",
+    "publish": "node scripts/publish.mjs",
+    "publish:push": "node scripts/publish.mjs --push"
+  }
+}

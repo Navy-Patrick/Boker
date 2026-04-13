@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>日记随笔 | Patrick 的静心小站</title>
+  <link rel="stylesheet" href="./style.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="site-header-inner">
+      <a class="site-title" href="./index.html">Patrick · 静心小站</a>
+      <nav class="nav">
+        <a href="./index.html">首页</a>
+        <a class="active" href="./diary.html">日记随笔</a>
+        <a href="./reading.html">道德经合集</a>
+        <a href="./projects.html">技术项目</a>
+        <a href="./about.html">关于</a>
+      </nav>
+    </div>
+  </header>
+
+  <div class="site-wrap">
+    <main class="main">
+      <section class="panel">
+        <div class="section-head">
+          <h1 class="section-title">日记随笔</h1>
+          <span class="tiny-note">Markdown 仓库：<code>content/essays/</code></span>
+        </div>
+        <p class="lead">按时间倒序排列。你每天只需写一篇 md，再在 <code>data/diary.json</code> 补一行索引。</p>
+        <ul class="item-list" id="diary-list"></ul>
+      </section>
+    </main>
+
+    <footer class="footer">© 2026 Patrick · GitHub Pages</footer>
+  </div>
+
+  <script src="./data/diary.js"></script>
+  <script src="./data/reading.js"></script>
+  <script src="./app.js"></script>
+  <script>
+    (async () => {
+      const list = document.getElementById('diary-list');
+      try {
+        const posts = await BlogApp.loadJson('./data/diary.json');
+        const sorted = posts.slice().sort((a, b) => (a.date < b.date ? 1 : -1));
+        list.innerHTML = sorted.map(item => `
+          <li class="item card-row">
+            <div class="item-meta">${BlogApp.formatDate(item.date)}</div>
+            <h2 class="item-title"><a href="./article.html?type=diary&id=${encodeURIComponent(item.id)}">${item.title}</a></h2>
+            <p class="item-desc">${item.summary}</p>
+          </li>
+        `).join('');
+      } catch (e) {
+        list.innerHTML = '<li class="empty">暂时无法加载随笔目录。</li>';
+      }
+    })();
+  </script>
+</body>
+</html>
