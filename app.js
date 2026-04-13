@@ -93,6 +93,12 @@ function miniMarkdown(md) {
       continue;
     }
 
+    if (line.startsWith("@@hero ")) {
+      closeList();
+      html += `<p class="md-hero">${escapeHtml(line.slice(7).trim())}</p>`;
+      continue;
+    }
+
     if (line.startsWith("### ")) {
       closeList();
       html += `<h3>${escapeHtml(line.slice(4))}</h3>`;
