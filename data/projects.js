@@ -11,6 +11,17 @@ window.__PROJECTS_DATA__ = [
     "content": "# 股票评论与情绪观察窗口\n\n> 日期：2026-04-10\n> 摘要：一个面向雪球 + 东方财富的双平台股票评论爬虫项目，支持分页抓取、本地数据库存取、每日评论统计导出、双平台看板与图表交互。\n> 技术栈：Python / Requests / BeautifulSoup / Database / CLI\n> GitHub：https://github.com/Navy-Patrick/dual-platform-crawler\n\n## 项目价值\n\n该双平台情绪数据看板的核心价值在于：将市场**主观情绪进行量化观察**，为投资者提供客观、多维度的参考依据。\n\n### 1）减少单一平台偏见\n- 雪球（偏价值投资）与东方财富（偏短线交易）用户画像差异明显\n- 通过双平台融合，形成“长期价值情绪 + 短期交易情绪”的互补视角\n- 降低单一社区带来的情绪误判风险\n\n### 2）降低情绪化决策\n- 历史评论数据可视化后，抽象“情绪”变成可追溯、可比较的曲线\n- 便于识别情绪过热 / 过冷的阶段性拐点\n- 为买卖节奏提供理性参考，减少盲目跟风\n\n### 3）支持个性化跟踪\n- 可聚焦“特定股票”进行持续情绪观测\n- 更贴近持仓与关注标的，而非泛化市场噪声\n- 有利于形成个人化的情绪研究框架\n\n## 一句话总结\n\n@@hero 这是一个将“舆论热度”转化为“结构化情绪信号”的实用项目，目标不是预测市场，而是帮助投资者在噪声中提高判断质量。\n\n---\n\n\n![dashboard](./dashboard.webp)\n\n![东方财富数据展示](./eastmoney.webp)\n\n![雪球界面数据展示](./xueqiu.webp)\n\n\n"
   },
   {
+    "id": "project-content-projects-Reddit-index",
+    "date": "2025-10-26",
+    "title": "Jigsaw – Agile Community Rules Classification",
+    "summary": "基于社区规则与帖子语义的二分类任务，通过语义向量与轻量结构化特征结合，识别帖子是否违反规则，兼顾效果与可复现性。",
+    "stack": "Python / Pandas / Scikit-learn / LightGBM / Qwen3-Embedding-0.6B / Kaggle",
+    "github": "https://github.com/Navy-Patrick/jigsaw-agile-community-rules-classification",
+    "cover": "",
+    "path": "./content/projects/Reddit/index.md",
+    "content": "# Jigsaw – Agile Community Rules Classification\n\n> 日期：2025-10-26\n> 摘要：基于社区规则与帖子语义的二分类任务，通过语义向量与轻量结构化特征结合，识别帖子是否违反规则，兼顾效果与可复现性。\n> 技术栈：Python / Pandas / Scikit-learn / LightGBM / Qwen3-Embedding-0.6B / Kaggle\n> GitHub：https://github.com/Navy-Patrick/jigsaw-agile-community-rules-classification\n\n## 项目核心内容\n\n本项目围绕 Kaggle 竞赛 `Jigsaw – Agile Community Rules Classification` 展开，目标是判断一条社区帖子是否违反给定规则。\n项目采用“语义理解 + 结构化特征”结合的方案，而不是只依赖单一模型。整体流程包括：\n- 对 `body`、`rule` 以及正负样本示例文本进行统一清洗与拼接\n- 提取文本长度、词汇重叠、相似度等轻量特征\n- 使用 `Qwen3-Embedding-0.6B` 获取语义向量，增强模型对复杂表达的理解能力\n- 使用 `LightGBM` 完成最终的二分类预测\n- 输出可直接提交到 Kaggle 的 `submission.csv`\n\n## 解决的问题\n\n这个项目主要解决以下几个问题：\n\n1. **规则表达抽象，不能只靠关键词判断**  \n   社区规则往往描述得比较宽泛，很多违规内容并不会直接出现敏感词，因此需要模型具备更强的语义理解能力。\n\n2. **存在大量难例和边界样本**  \n   有些帖子表面上看起来正常，但结合规则后其实违规；也有些帖子语气激烈，但并不违反规则。项目通过语义向量和统计特征结合，提升对这类样本的识别能力。\n\n3. **训练环境资源有限**  \n   Kaggle Notebook 的运行时间和算力有限，不能依赖过于复杂的训练流程，因此项目采用轻量、稳定、可离线运行的方案。\n\n总结来说，这个项目的目标是：在资源有限的条件下，把社区规则理解任务做成一个**可运行、可复现、兼顾效果与效率**的完整 NLP 分类方案。\n\n![效果图1](./poster.jpg)"
+  },
+  {
     "id": "project-content-projects-AIOps-LLM-Agent-智能运维故障根因诊断项目",
     "date": "2025-09-30",
     "title": "LLM Agent 智能运维故障根因诊断项目",

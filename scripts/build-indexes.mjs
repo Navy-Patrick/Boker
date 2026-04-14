@@ -225,7 +225,9 @@ function makeProjectsIndex() {
   return walkMd(PROJECTS_DIR)
     .filter(file => {
       const name = path.basename(file).toLowerCase();
-      return !name.includes('template');
+      if (name.includes('template')) return false;
+      if (toPosix(file).includes('/Reddit/README.md')) return false;
+      return true;
     })
     .map(file => projectFromFile(file, readText(file)))
     .sort((a, b) => (a.date < b.date ? 1 : -1));
