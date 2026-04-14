@@ -31,10 +31,10 @@
 ---
 
 
-![dashboard](./dashboard.png)
+![dashboard](./dashboard.webp)
 
-![东方财富数据展示](./eastmoney.png)
+![东方财富数据展示](./eastmoney.webp)
 
-![雪球界面数据展示](./xueqiu.png)
+![雪球界面数据展示](./xueqiu.webp)
 
 

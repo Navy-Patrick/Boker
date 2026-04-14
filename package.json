@@ -7,5 +7,9 @@
     "build:indexes": "node scripts/build-indexes.mjs",
     "publish": "node scripts/publish.mjs",
     "publish:push": "node scripts/publish.mjs --push"
+  },
+  "devDependencies": {
+    "@squoosh/cli": "^0.7.1",
+    "sharp": "^0.34.5"
   }
 }
