@@ -107,6 +107,7 @@
               if (/^!\[[^\]]*\]\([^\)]+\)$/.test(t)) return false;
               if (/^##\s*界面展示/.test(t)) return false;
               if (/^###\s*(双平台|东方财富|雪球|爬取)/.test(t)) return false;
+              if (/^\s*[-*]\s*比赛链接\s*[:：]/.test(t)) return false;
               if (t === '---') return false;
               return true;
             })
@@ -122,7 +123,7 @@
           const thumbs = images.slice(1);
           const thumbHtml = thumbs.length
             ? thumbs.map(img => `<figure class="project-thumb"><img src="${img.src}" alt="${img.alt}" loading="lazy" /></figure>`).join('')
-            : '<div class="project-thumb empty">暂无更多截图</div>';
+            : '';
 
           bodyEl.innerHTML = `
             <section class="project-layout">

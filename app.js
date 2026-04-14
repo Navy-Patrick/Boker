@@ -128,7 +128,10 @@ function miniMarkdown(md) {
         html += "<ul>";
         inList = true;
       }
-      html += `<li>${escapeHtml(line.slice(2))}</li>`;
+      const inlineLi = escapeHtml(line.slice(2))
+        .replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>")
+        .replace(/`([^`]+)`/g, "<code>$1</code>");
+      html += `<li>${inlineLi}</li>`;
       continue;
     }
 

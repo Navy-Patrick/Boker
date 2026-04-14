@@ -223,7 +223,10 @@ function makeReadingIndex() {
 
 function makeProjectsIndex() {
   return walkMd(PROJECTS_DIR)
-    .filter(file => path.basename(file).toLowerCase() === 'index.md')
+    .filter(file => {
+      const name = path.basename(file).toLowerCase();
+      return !name.includes('template');
+    })
     .map(file => projectFromFile(file, readText(file)))
     .sort((a, b) => (a.date < b.date ? 1 : -1));
 }
