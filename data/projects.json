@@ -19,6 +19,17 @@
     "github": "https://github.com/Navy-Patrick/aliyun_Ai-ops",
     "cover": "",
     "path": "./content/projects/AIOps/LLM Agent 智能运维故障根因诊断项目.md",
-    "content": "# LLM Agent 智能运维故障根因诊断项目\n\n> 日期：2025-09-30\n> 摘要：针对云原生环境下系统故障定位难、效率低的痛点，主导LLM Agent管线性能与准确率调优，通过Prompt优化、多智能体协作等策略，实现故障快速精准根因诊断，助力团队在5,000支队伍中斩获Top 0.5%的成绩。\n> 技术栈：Python / PyTorch / Transformers / PEFT / LoRA \n> GitHub：https://github.com/Navy-Patrick/aliyun_Ai-ops\n\n\n## 项目背景\n随着云原生、AIGC等技术的快速革新，数字经济的影响力持续扩大，系统稳定性保障成为企业发展中无法回避的核心挑战，如何快速、准确定位系统故障，直接关系到系统可用性与业务连续性。与此同时，LLM凭借强大的推理能力，在运维领域的应用价值日益凸显，而多样的可观测数据（Log、Trace、Metric、Entity、Event）与开源事实标准，也让软件系统运行状况愈发透明。在此背景下，本次大赛提供真实云原生环境及多模态可观测数据，通过注入各类故障，要求选手借助AI技术，实现快速、准确、低成本的故障根因诊断，我们因此开展本项目，探索AI在AIOps场景的落地路径，解决故障定位痛点。\n\n## 核心工作\n1. Prompt Engineering深度优化，引入“资源优先”“相对指标强制”“SOP约束”核心诊断规则，引导模型精准区分表层症状与底层根因，提升诊断准确率。\n2. 落地多角色智能体协作方案，设计并调试数据分析师、系统专家、验证专家的协作流程与信息传递机制，有效降低单一模型的“幻觉”风险。\n3. 实现上下文管理与性能优化策略，通过动态摘要、上下文步数限制、早停机制，平衡故障诊断深度与Token消耗，提升管线运行效率。\n![获奖图片](./rank_27-award.png) \n\n## 难点处理\n- 针对**单一模型幻觉风险高**的问题，通过多角色交叉验证机制，让验证专家对诊断结果进行二次校验，结合可观测数据反向验证推理逻辑；\n- 针对**诊断深度与Token消耗**的平衡难题，通过大量实验调试动态摘要阈值、上下文步数上限及早停条件，找到最优参数组合；\n\n- 比赛链接：[比赛官方链接](https://tianchi.aliyun.com/competition/entrance/532387)"
+    "content": "# LLM Agent 智能运维故障根因诊断项目\n\n> 日期：2025-09-30\n> 摘要：针对云原生环境下系统故障定位难、效率低的痛点，主导LLM Agent管线性能与准确率调优，通过Prompt优化、多智能体协作等策略，实现故障快速精准根因诊断，助力团队在5,000支队伍中斩获Top 0.5%的成绩。\n> 技术栈：Python / PyTorch / Transformers / PEFT / LoRA \n> GitHub：https://github.com/Navy-Patrick/aliyun_Ai-ops\n\n\n## 项目背景\n随着云原生、AIGC等技术的快速革新，数字经济的影响力持续扩大，系统稳定性保障成为企业发展中无法回避的核心挑战，如何快速、准确定位系统故障，直接关系到系统可用性与业务连续性。与此同时，LLM凭借强大的推理能力，在运维领域的应用价值日益凸显，而多样的可观测数据（Log、Trace、Metric、Entity、Event）与开源事实标准，也让软件系统运行状况愈发透明。在此背景下，本次大赛提供真实云原生环境及多模态可观测数据，通过注入各类故障，要求选手借助AI技术，实现快速、准确、低成本的故障根因诊断，我们因此开展本项目，探索AI在AIOps场景的落地路径，解决故障定位痛点。\n\n## 核心工作\n1. Prompt Engineering深度优化，引入“资源优先”“相对指标强制”“SOP约束”核心诊断规则，引导模型精准区分表层症状与底层根因，提升诊断准确率。\n2. 落地多角色智能体协作方案，设计并调试数据分析师、系统专家、验证专家的协作流程与信息传递机制，有效降低单一模型的“幻觉”风险。\n3. 实现上下文管理与性能优化策略，通过动态摘要、上下文步数限制、早停机制，平衡故障诊断深度与Token消耗，提升管线运行效率。\n![获奖图片](./rank_27-award.webp) \n\n## 难点处理\n- 针对**单一模型幻觉风险高**的问题，通过多角色交叉验证机制，让验证专家对诊断结果进行二次校验，结合可观测数据反向验证推理逻辑；\n- 针对**诊断深度与Token消耗**的平衡难题，通过大量实验调试动态摘要阈值、上下文步数上限及早停条件，找到最优参数组合；\n\n- 比赛链接：[比赛官方链接](https://tianchi.aliyun.com/competition/entrance/532387)"
+  },
+  {
+    "id": "project-content-projects-X-scraper-index",
+    "date": "2025-06-07",
+    "title": "X / Twitter 数据采集器（本地版）",
+    "summary": "面向指定账号与时间区间的推文采集工具，基于 Scweet 实现本地稳定抓取，统一输出 JSON，方便后续分析与可视化。",
+    "stack": "Python / Scweet / Requests / JSON / CLI",
+    "github": "https://github.com/Navy-Patrick/twitter-x-scraper",
+    "cover": "",
+    "path": "./content/projects/X-scraper/index.md",
+    "content": "# X / Twitter 数据采集器（本地版）\n\n> 日期：2025-06-07\n> 摘要：面向指定账号与时间区间的推文采集工具，基于 Scweet 实现本地稳定抓取，统一输出 JSON，方便后续分析与可视化。\n> 技术栈：Python / Scweet / Requests / JSON / CLI\n> GitHub：https://github.com/Navy-Patrick/twitter-x-scraper\n\n## 项目背景\n\n这个项目要解决的是：在不依赖官方 API 的前提下，如何稳定抓取指定账号在特定时间范围内的原创内容，并沉淀为可复用的数据资产。\n\n## 核心能力\n\n1. **账号定向抓取**：支持按用户名列表批量抓取，便于长期跟踪。\n\n2. **时间窗口控制**：支持 `SINCE/UNTIL` 精确筛选，降低无效数据噪声。\n\n3. **统一 JSON 输出**：结果结构一致，便于后续分析、建模和看板展示。\n![X-scraper 项目展示](./display.webp)\n\nGitHub：[项目仓库地址](https://github.com/Navy-Patrick/twitter-x-scraper)\n"
   }
 ]
