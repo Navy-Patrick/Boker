@@ -100,6 +100,9 @@
             return { alt, src };
           });
 
+          const competitionMatch = normalizedMd.match(/比赛链接\s*[:：]\s*\[([^\]]+)\]\((https?:[^\)]+)\)/);
+          const competitionLink = competitionMatch ? { text: competitionMatch[1], href: competitionMatch[2] } : null;
+
           const textOnlyMd = normalizedMd
             .split('\n')
             .filter(line => {
@@ -135,12 +138,16 @@
             </section>
           `;
 
-          if (item.github) {
-            linkEndEl.innerHTML = `
-              <div class="project-end-link">
-                <a href="${item.github}" target="_blank" rel="noopener">项目链接：${item.github}</a>
-              </div>
-            `;
+          if (type === 'project') {
+            const finalLink = competitionLink?.href || item.github || '';
+            const finalText = competitionLink?.text || '项目链接';
+            if (finalLink) {
+              linkEndEl.innerHTML = `
+                <div class="project-end-link">
+                  <a href="${finalLink}" target="_blank" rel="noopener">${finalText}：${finalLink}</a>
+                </div>
+              `;
+            }
           }
         } else {
           bodyEl.innerHTML = normalizedMd ? BlogApp.miniMarkdown(normalizedMd) : '<p>正文尚未准备好。</p>';
