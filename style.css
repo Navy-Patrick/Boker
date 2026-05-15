@@ -364,7 +364,7 @@ a:hover { text-decoration: underline; }
 .project-layout {
   min-height: 0;
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1.12fr 0.88fr;
   gap: 8px;
   overflow: visible;
 }
@@ -403,8 +403,9 @@ a:hover { text-decoration: underline; }
 }
 .project-visual {
   min-width: 0;
+  min-height: 0;
   display: grid;
-  grid-template-rows: auto auto;
+  grid-template-rows: 1fr auto;
   gap: 8px;
 }
 .project-main-shot {
@@ -412,33 +413,40 @@ a:hover { text-decoration: underline; }
   border-radius: 10px;
   padding: 4px;
   background: rgba(255,255,255,0.72);
+  min-height: 0;
 }
 .project-main-shot img {
   width: 100%;
-  height: auto;
+  height: 100%;
   display: block;
   border-radius: 6px;
   object-fit: contain;
   background: #f5f7fa;
 }
 .project-thumb-row {
-  display: grid;
-  grid-template-columns: 1fr;
+  display: flex;
   gap: 8px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding-bottom: 2px;
+  scroll-snap-type: x mandatory;
 }
 .project-thumb {
   margin: 0;
+  flex: 0 0 180px;
+  height: 110px;
   border: 1px solid rgba(210, 216, 226, 0.9);
   border-radius: 8px;
   padding: 3px;
   background: rgba(255,255,255,0.72);
+  scroll-snap-align: start;
 }
 .project-thumb img {
   width: 100%;
-  height: auto;
+  height: 100%;
   display: block;
   border-radius: 5px;
-  object-fit: contain;
+  object-fit: cover;
 }
 .project-end-link {
   margin-top: 2px;
