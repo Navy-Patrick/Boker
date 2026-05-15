@@ -100,8 +100,8 @@
             return { alt, src };
           });
 
-          const competitionMatch = normalizedMd.match(/比赛链接\s*[:：]\s*\[([^\]]+)\]\((https?:[^\)]+)\)/);
-          const competitionLink = competitionMatch ? { text: competitionMatch[1], href: competitionMatch[2] } : null;
+          const specialLinkMatch = normalizedMd.match(/(?:比赛链接|体验链接)\s*[:：]\s*\[([^\]]+)\]\((https?:[^\)]+)\)/);
+          const competitionLink = specialLinkMatch ? { text: specialLinkMatch[1], href: specialLinkMatch[2] } : null;
 
           const textOnlyMd = normalizedMd
             .split('\n')
