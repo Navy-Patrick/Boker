@@ -119,20 +119,14 @@
 
           const textHtml = textOnlyMd ? BlogApp.miniMarkdown(textOnlyMd) : '<p>暂无项目说明。</p>';
 
-          const mainImage = images[0]
-            ? `<div class="project-main-shot"><img src="${images[0].src}" alt="${images[0].alt}" loading="lazy" /></div>`
-            : '<div class="project-main-shot empty">暂无主图</div>';
-
-          const thumbs = images.slice(1);
-          const thumbHtml = thumbs.length
-            ? thumbs.map(img => `<figure class="project-thumb"><img src="${img.src}" alt="${img.alt}" loading="lazy" /></figure>`).join('')
+          const thumbHtml = images.length
+            ? images.map(img => `<figure class="project-thumb"><img src="${img.src}" alt="${img.alt}" loading="lazy" /></figure>`).join('')
             : '';
 
           bodyEl.innerHTML = `
             <section class="project-layout">
               <div class="project-text">${textHtml}</div>
               <aside class="project-visual">
-                ${mainImage}
                 <div class="project-thumb-row">${thumbHtml}</div>
               </aside>
             </section>
@@ -144,7 +138,7 @@
             if (finalLink) {
               linkEndEl.innerHTML = `
                 <div class="project-end-link">
-                  <a href="${finalLink}" target="_blank" rel="noopener">${finalText}：${finalLink}</a>
+                  <a href="${finalLink}" target="_blank" rel="noopener">${finalText}</a>
                 </div>
               `;
             }
