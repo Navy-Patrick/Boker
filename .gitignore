@@ -1,0 +1,7 @@
+# Local working notes (do not publish)
+local-notes/
+node_modules/
+
+# Optional OS/editor noise
+.DS_Store
+Thumbs.db
