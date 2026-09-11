@@ -33,16 +33,14 @@ function renderArticle() {
   if (!item) { document.getElementById('article-title').textContent = '未找到文章'; return; }
   document.title = `${item.title} | Patrick 的静心小站`; document.getElementById('article-title').textContent = item.title; document.getElementById('article-date').textContent = item.date;
   const body = document.getElementById('article-body');
-  const legacyLayout = type === 'project' && getQuery().layout === 'legacy';
-  if (type === 'project' && !legacyLayout) {
+  if (type === 'project') {
     const images = [...item.content.matchAll(/^!\[([^\]]*)\]\(([^)]+)\)\s*$/gm)].map(([, alt, source]) => ({ alt: alt || '项目截图', source: assetUrl(source, item.path) }));
     const textOnlyContent = item.content.replace(/^!\[[^\]]*\]\([^)]+\)\s*$/gm, '');
-    const gallery = images.length ? `<section class="project-gallery-section" aria-label="项目展示"><div class="project-gallery-heading"><h2>项目展示</h2><a href="${articleUrl(item)}&layout=legacy">使用经典布局</a></div><div class="project-gallery">${images.map((image, index) => `<button class="project-gallery-card" type="button" data-gallery-index="${index}" data-gallery-src="${escapeHtml(image.source)}" data-gallery-alt="${escapeHtml(image.alt)}"><img src="${escapeHtml(image.source)}" alt="${escapeHtml(image.alt)}" loading="lazy"><span>${escapeHtml(image.alt)}</span></button>`).join('')}</div></section>` : '';
+    const gallery = images.length ? `<section class="project-gallery-section" aria-label="项目展示"><div class="project-gallery-heading"><h2>项目展示</h2></div><div class="project-gallery">${images.map((image, index) => `<button class="project-gallery-card" type="button" data-gallery-index="${index}" data-gallery-src="${escapeHtml(image.source)}" data-gallery-alt="${escapeHtml(image.alt)}"><img src="${escapeHtml(image.source)}" alt="${escapeHtml(image.alt)}" loading="lazy"><span>${escapeHtml(image.alt)}</span></button>`).join('')}</div></section>` : '';
     body.innerHTML = `${markdown(textOnlyContent, item.path, item.title)}${gallery}`;
     bindGallery(body);
   } else {
     body.innerHTML = markdown(item.content, item.path, item.title);
-    if (type === 'project') body.insertAdjacentHTML('afterbegin', `<p class="layout-switch"><a href="${articleUrl(item)}">使用自适应图册布局</a></p>`);
   }
   const position = entries(type).indexOf(item); const older = entries(type)[position + 1]; const newer = entries(type)[position - 1];
   if (type !== 'project') setHtml('article-nav', [newer, older].map((entry, index) => entry ? `<a class="nav-card" href="${articleUrl(entry)}"><span>${index ? '下一篇' : '上一篇'}</span><strong>${escapeHtml(entry.title)}</strong></a>` : '').join(''));

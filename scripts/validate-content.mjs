@@ -5,7 +5,8 @@ import { COLLECTIONS, dateFromText, parseFrontMatter, walkMarkdown } from './con
 const errors = [];
 const required = { diary: ['title', 'date'], reading: ['title', 'date', 'book', 'section'], project: ['title', 'date', 'summary', 'stack'] };
 for (const [type, directory] of Object.entries(COLLECTIONS)) {
-  for (const file of walkMarkdown(directory)) {
+  const files = walkMarkdown(directory).filter(file => type !== 'project' || path.basename(file).toLowerCase() === 'index.md');
+  for (const file of files) {
     const source = fs.readFileSync(file, 'utf8');
     const { meta, body, hasFrontMatter } = parseFrontMatter(source);
     const name = path.relative(process.cwd(), file);

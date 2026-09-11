@@ -343,8 +343,6 @@ a:hover { text-decoration: underline; }
   margin-bottom: 12px;
 }
 .project-gallery-heading h2 { margin: 0; }
-.project-gallery-heading a,
-.layout-switch a { font-size: 0.88rem; color: var(--muted); }
 .project-gallery {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));

@@ -15,9 +15,10 @@ function readEntry(type, file) {
   return entry;
 }
 
-const collections = Object.fromEntries(Object.entries(COLLECTIONS).map(([type, directory]) => [type,
-  walkMarkdown(directory).map(file => readEntry(type, file)).sort((left, right) => right.date.localeCompare(left.date))
-]));
+const collections = Object.fromEntries(Object.entries(COLLECTIONS).map(([type, directory]) => {
+  const files = walkMarkdown(directory).filter(file => type !== 'project' || path.basename(file).toLowerCase() === 'index.md');
+  return [type, files.map(file => readEntry(type, file)).sort((left, right) => right.date.localeCompare(left.date))];
+}));
 
 fs.mkdirSync(path.dirname(output), { recursive: true });
 fs.writeFileSync(output, `window.__BLOG_DATA__ = ${JSON.stringify(collections, null, 2)};\n`, 'utf8');
